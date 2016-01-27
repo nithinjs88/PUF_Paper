@@ -110,7 +110,11 @@ An Analog to Digital Converter (ADC) on the other hand converts an analog quanti
 \item \textit{Sigma-Delta ADC:} A sigma-delta ADC consists of modulator and a digital filter. An analog signal is fed to the modulator whose output is fed to the digital filter to obtain the digital output. A sigma-delta DAC achieves high levels of accuracy without using expensive components. However the conversion time is slow compared to other types of ADC's.
 \item \textit{Successive-Approximation ADC:} A successive-approximation ADC uses binary search to compare the input signal with varying voltage levels to obtain its equivalent digital output. In SA-ADC, a successive approximation register(SAR) containing a digital value is fed to an internal DAC and its output is compared to the input voltage. A sample and hold(SAH) circuit is used to supply constant input voltage to the comparator. A SA-ADC provides medium levels of accuracy and conversion time. The PUF output variation can occur because of microscopic variations in electrical components used in SAH circuit and internal DAC.
 %It suffers from thermal noise for capacitors($kT/C$) which increases with temperature and is inversely proportional to the capacitance. However with higher capacitance, power consumption increases and accuracy decreases and usually a trade off is required.
-
+\begin{figure}[H]
+\includegraphics[scale=0.8]{SA-ADC.png}
+\centering
+\caption{Block diagram of a 4-bit Successive-Approximation ADC}
+\end{figure}
 \end{itemize}
 
 \section{Mixed Circuit based PUF}
