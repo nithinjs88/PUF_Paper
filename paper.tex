@@ -119,7 +119,15 @@ An Analog to Digital Converter (ADC) on the other hand converts an analog quanti
 \end{itemize}
 
 \section{Mixed Circuit based PUF}
+In any electronic device, we encounter conversions from analog form to digital form and vice versa. Consider
+two people speaking through a mobile phone. Sound is converted to an analog signal by the microphone, which is
+then converted to digital form by an analog to digital converter(ADC) for transmission. In the other end, the digital
+data is converted to analog by a digital to analog converter(DAC) and the speaker converts to audible sound. In this
+digitalizing world, ADC and DAC modules are omnipresent in all devices. The main reason behind this is that all the input from
+the external world is analog in nature and the device process everything digitally. This factor plays a key role in
+the idea of using ADC and DAC components for PUFs. The ADC and DAC modules can be embedded inside the chip or outside the chip.
 
+A set of hexadecimal values is passed to the DAC which converts it to its corresponding analog values which is again fed to ADC which converts back to digital value. So our challenge is an array of digital values which is fed to the DAC and response is calculated from the digital values output by the ADC of the device.The microscopic variations present in the ADC and DAC components gives rise to an unique response for each device for the same set of challenges. This mixed circuit based PUF is cost effective and very efficient as it does not require expensive hardware like arbiters and oscillators for digital electronic PUFs and can be easily reproducible unlike non electronic PUFs. Moreover, ADC and DAC components are ubiquitous in modern digital devices and can be modified easily with little effort and integrated effortlessly into the current crop of devices.
 
 \section{Evaluation}
 
