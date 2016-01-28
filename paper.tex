@@ -103,6 +103,11 @@ The PUFs seen so far are non intrinsic PUFs where randomness is explicitly intro
 %Disadvantage of intrinsic puf and why our model is better.
 \section{ADC and DAC}
 A Digital to Analog Converter(DAC) as the name suggests converts digital data to an analog quantity like voltage. A n-bit DAC can be constructed easily using a R-2R ladder which consists of n R-2R networks. Each network is fed with a reference voltage(say $V_{ref}$) for a set bit or zero voltage for a 0 bit. A R-2R network in the ladder causes the voltage to be split accordingly to its bit position. For a n-bit DAC, output voltage varies from 0 to $(1-\frac{1}{2^{n}})*V_{ref}$ in steps of $\frac{1}{2^{n}}*V_{ref}$. A R-2R DAC suffers from thermal noise which increases with resistance and temperature. The PUF output variation can occur because of microscopic variations in the resistors and switches used.
+\begin{figure}[H]
+\includegraphics[scale=0.8]{SA-ADC.png}
+\centering
+\caption{Block diagram of a 4-bit R-2R DAC}
+\end{figure}
 
 An Analog to Digital Converter (ADC) on the other hand converts an analog quantity(usually voltage) to its equivalent digital data(usually its amplitude). The prominent ADC types used are
 \begin{itemize}
@@ -110,11 +115,7 @@ An Analog to Digital Converter (ADC) on the other hand converts an analog quanti
 \item \textit{Sigma-Delta ADC:} A sigma-delta ADC consists of modulator and a digital filter. An analog signal is fed to the modulator whose output is fed to the digital filter to obtain the digital output. A sigma-delta DAC achieves high levels of accuracy without using expensive components. However the conversion time is slow compared to other types of ADC's.
 \item \textit{Successive-Approximation ADC:} A successive-approximation ADC uses binary search to compare the input signal with varying voltage levels to obtain its equivalent digital output. In SA-ADC, a successive approximation register(SAR) containing a digital value is fed to an internal DAC and its output is compared to the input voltage. A sample and hold(SAH) circuit is used to supply constant input voltage to the comparator. A SA-ADC provides medium levels of accuracy and conversion time. The PUF output variation can occur because of microscopic variations in electrical components used in SAH circuit and internal DAC.
 %It suffers from thermal noise for capacitors($kT/C$) which increases with temperature and is inversely proportional to the capacitance. However with higher capacitance, power consumption increases and accuracy decreases and usually a trade off is required.
-\begin{figure}[H]
-\includegraphics[scale=0.8]{SA-ADC.png}
-\centering
-\caption{Block diagram of a 4-bit Successive-Approximation ADC}
-\end{figure}
+
 \end{itemize}
 
 \section{Mixed Circuit based PUF}
