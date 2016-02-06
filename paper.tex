@@ -11,9 +11,9 @@ using physically unclonable functions (or PUFs) that make use of the
 unique nanoscale variations during device fabrication.
 
 In this paper, we show how mixed signal ICs in a device like ADCs and DACs 
-have properties that make them amicable for use in PUF applications. By
+have properties that make them amicable for use as intrinsic PUFs. By
 virtue of having analog components, the PUF properties in these ICs
-are significantly more amplified compared to digital PUFs such as those based on
+are more stronger compared to digital PUFs such as those based on
 SRAM and ring oscillators. An added advantage is that mixed signal PUFs
 have considerably less overheads compared to the contemporary digital PUFs. 
 \end{abstract}
@@ -172,7 +172,71 @@ in electrical components used in SAH circuit and internal DAC.
 %It suffers from thermal noise for capacitors($kT/C$) which increases with temperature and is inversely proportional to the capacitance. However with higher capacitance, power consumption increases and accuracy decreases and usually a trade off is required.
 
 
-\section{Mixed Circuit PUFs}
+\section{Mixed Signal PUFs}
+This section describes how the MS-PUFs are built.
+
+{\flushleft \em Construction of MS-PUF. }
+The MS-PUF is created by connecting an output of a DAC to an
+input channel of an ADC. This creates a loop between the processor
+core, the DAC, and the ADC as shown in Figure~\ref{fig:ms-puf}.
+The sofware generates a challenge in the form of a time-series pattern
+comprising of digital values, which are transferred one at a time
+to the DAC. Each digital value is converted to an analog voltage or
+current and reconverted to a representative digital value by the ADC.
+The software program accumulates 
+all ADC outputs to form the response to the challenge. Algorithm~\ref{algo:puf_sw}
+has the details.
+
+\begin{algorithm}[!ht] \label{algo:puf_sw}
+\begin{scriptsize}
+	\caption{\emph{Software Program for the MS-PUF}}
+	\DontPrintSemicolon
+	\KwIn{$\mathbf C$ : an array representing the challenge}
+	\KwOut{$\mathbf R$ : an array representing the response}
+	\Begin{
+		\For{$i \in \{1, 2, \cdots len(\mathbf C)\}$}{
+			OutputToDAC($\mathbf C_i$); \\
+			/* Wait for ADC to finish conversion */ \;
+			$\mathbf R_i$ = InputfromADC(); \;	
+		}
+		\Return ${\mathbf R}$
+	}
+\end{scriptsize}
+\end{algorithm}
+
+Specify the PUF (formally)
+
+
+
+
+Explain how the analysis is done
+
+Why would we expect to have variation
+
+A DAC output depends on several nano-scale features such 
+as variations in voltage references, resistor tolerances, 
+capacitive effects, and amplifier differences. This could result 
+in two DACs having different responses to the same input. 
+Successive approximation ADCs have a in-built DAC, therefore
+would be affected by the same variations as the DAC. Additionally,
+
+
+
+
+Better PUFs by considering multiple devices
+
+
+
+
+
+
+
+ could cause two DACs to have different responses
+
+
+ such as the tolerance 
+
+
 Nano scale variations in DACs and ADCs.
 
 
