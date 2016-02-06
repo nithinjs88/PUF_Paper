@@ -175,17 +175,18 @@ in electrical components used in SAH circuit and internal DAC.
 \section{Mixed Signal PUFs}
 This section describes how the MS-PUFs are built.
 
-{\flushleft \em Construction of MS-PUF. }
+{\flushleft \em Construction of the MS-PUF. }
 The MS-PUF is created by connecting an output of a DAC to an
 input channel of an ADC. This creates a loop between the processor
 core, the DAC, and the ADC as shown in Figure~\ref{fig:ms-puf}.
-The sofware generates a challenge in the form of a time-series pattern
-comprising of digital values, which are transferred one at a time
-to the DAC. Each digital value is converted to an analog voltage or
-current and reconverted to a representative digital value by the ADC.
-The software program accumulates 
-all ADC outputs to form the response to the challenge. Algorithm~\ref{algo:puf_sw}
-has the details.
+The sofware running on the processor core 
+generates a challenge in the form of a time-series pattern
+comprising of $n$-bit digital values, which are transferred one at a time
+to the DAC. Each digital value is converted to an analog voltage (or
+current) and reconverted to a representative $m$-bit digital value by the ADC.
+The software program reads the
+ADC output and forms the response to the challenge using a function $g$.
+Algorithm~\ref{algo:puf_sw} has the details.
 
 \begin{algorithm}[!ht] \label{algo:puf_sw}
 \begin{scriptsize}
@@ -195,35 +196,34 @@ has the details.
 	\KwOut{$\mathbf R$ : an array representing the response}
 	\Begin{
 		\For{$i \in \{1, 2, \cdots len(\mathbf C)\}$}{
-			OutputToDAC($\mathbf C_i$); \\
+			Output\_to\_DAC($\mathbf C_i$); \\
 			/* Wait for ADC to finish conversion */ \;
-			$\mathbf R_i$ = InputfromADC(); \;	
+			$r$ = Input\_from\_ADC(); \;	
+			$\mathbf R_i = g(C_i, r)$ \;
 		}
 		\Return ${\mathbf R}$
 	}
 \end{scriptsize}
 \end{algorithm}
 
-Specify the PUF (formally)
-
-
-
-
-Explain how the analysis is done
-
-Why would we expect to have variation
-
-A DAC output depends on several nano-scale features such 
-as variations in voltage references, resistor tolerances, 
+In every iteration in Algorithm~\ref{algo:puf_sw}, $r$, the $m$-bit reply from 
+the ADC is the result of the $n$-bit DAC input $\mathbf C_i$
+undergoing a conversion to analog followed by a reconversion to digital.
+Typically $m$ and $n$ are $8$, $12$, $16$, or $24$ bits. 
+Due to reasons such as quatification and ambient noise, the reply
+$r$ would be different from $\mathbf C_i$. Further, due to nano-scale
+variations between devices, $r$ would vary from one device
+to another.  There are several potential reasons for variations 
+between devices.
+A DAC output for instance, is influenced by several nano-scale features such 
+as voltage references, resistor tolerances, 
 capacitive effects, and amplifier differences. This could result 
 in two DACs having different responses to the same input. 
-Successive approximation ADCs have a in-built DAC, therefore
+Successive approximation ADCs have built in DACs, therefore
 would be affected by the same variations as the DAC. Additionally,
+other components in the ADC such as sample and hold circuits and
+comparators could lead to differences in the reply.
 
-
-
-
-Better PUFs by considering multiple devices
 
 
 
