@@ -102,7 +102,8 @@ The structre of the paper is as follows....
 \subsection{Physically Unclonable Functions}
 A PUF relies on the fact that two similar devices tend to exhibit
 different behaviour because of differences in their physical microstructure
-and process variations during manufacture. A PUF extracts these differences by a 
+and process variations during manufacture. A PUF extracts these 
+differences by a 
 series of challenges and responses. Each response is a 
 function of the challenge and the device characteristics. Thus each device will
 have a different response for the same challenge. A collection of challenge-response pairs
@@ -122,43 +123,65 @@ and unclonable.
 
 \subsection{Mixed Signal Circuits}
 Mixed signal circuits interface the analog and digital domains in a chip. 
-They are typically used to digitalize real world signals from sensors, which
-then can be processed. Mixed signal circuits are also used to control hardware
-devices. For instance, in a mobile phone, audio signals captured from 
+They are typically used to digitalize real world signals captured by
+a sensor, which
+can then be processed by software. They are also used to actuate external 
+hardware devices. 
+For instance, in a mobile phone, audio signals captured from 
 a microphone are digitalized by means of an {\em analog to digital converter
 (ADC)}, before being processed by the mobile software. Received audio data is
 converted to analog by a {\em digital to analog converter (DAC)} and actuate the
 speakers of the mobile phone. This section provides the necessary background
 for ADCs and DACs.
 
-An $n$-bit DAC converts and $n$-bit digital value to a corresponding analog
-voltage. A typical DAC uses an R-2R ladder as shown in Figure~\ref{fig:r2r}.
-Each stage comprises of a pair of resistors (R and 2R) and a switch $s_i$ 
+{\flushleft \em Digital to Analog Converters.}
+An $n$-bit DAC converts an $n$-bit digital value into a corresponding analog
+voltage. A typical DAC uses an R-2R network as shown in Figure~\ref{fig:r2r}.
+Each stage in the network comprises of a pair of 
+resistors (R and 2R) and a switch $s_i$ 
 ($0 \le i \le n$). The switch $s_i$ is closed only if the $i$-th bit of the
-digital data is one. 
+digital data is one. The resulting voltage at the amplifier's input is the
+sum of voltages due to each closed switch. 
+Each switch contributes a voltage of $\frac{1}{2^{n-i}}$, 
+where $n < i \le 0$. 
+Thus, the analog voltage at the amplifier's input
+is proportional to the digital data.
 
-
-The current through amplifer is the weighted sum of
-all 
-
-
-can be constructed easily using a R-2R ladder which consists of n R-2R networks. Each network is fed with a reference voltage(say $V_{ref}$) for a set bit or zero voltage for a 0 bit. A R-2R network in the ladder causes the voltage to be split accordingly to its bit position. For a n-bit DAC, output voltage varies from 0 to $(1-\frac{1}{2^{n}})*V_{ref}$ in steps of $\frac{1}{2^{n}}*V_{ref}$. A R-2R DAC suffers from thermal noise which increases with resistance and temperature. The PUF output variation can occur because of microscopic variations in the resistors and switches used.
-\begin{figure}[H]
-\includegraphics[scale=0.8]{SA-ADC.png}
+\begin{figure}
+\includegraphics[width=6cm]{SA-ADC.png}
 \centering
-\caption{Block diagram of a 4-bit R-2R DAC}
+\caption{Block diagram of a 4-bit R-2R DAC\label{fig:r2r}}
 \end{figure}
 
-An Analog to Digital Converter (ADC) on the other hand converts an analog quantity(usually voltage) to its equivalent digital data(usually its amplitude). The prominent ADC types used are
-\begin{itemize}
-\item \textit{Flash ADC:} Typical flash ADC's consists of voltage ladder of resistors or capacitors paired with comparators which compare input voltage to reference voltage. The output from the comparators passes to an encoder which outputs a binary value. A flash ADC is extremely fast and accurate, but is expensive as $2^{n}-1$ comparators are required for a $n$-bit conversion.
-\item \textit{Sigma-Delta ADC:} A sigma-delta ADC consists of modulator and a digital filter. An analog signal is fed to the modulator whose output is fed to the digital filter to obtain the digital output. A sigma-delta DAC achieves high levels of accuracy without using expensive components. However the conversion time is slow compared to other types of ADC's.
-\item \textit{Successive-Approximation ADC:} A successive-approximation ADC uses binary search to compare the input signal with varying voltage levels to obtain its equivalent digital output. In SA-ADC, a successive approximation register(SAR) containing a digital value is fed to an internal DAC and its output is compared to the input voltage. A sample and hold(SAH) circuit is used to supply constant input voltage to the comparator. A SA-ADC provides medium levels of accuracy and conversion time. The PUF output variation can occur because of microscopic variations in electrical components used in SAH circuit and internal DAC.
+{\flushleft \em Analog to Digital Converters.}
+An $n$-bit ADC converts an analog voltage (or current) to 
+an equivalent $n$-bit digital data. The commonly used ADCs are
+flash, successive-approximation, and sigma-delta ADCs. We give
+a brief background on the successive-approximation ADC; the 
+ADC we used for our expermients.
+
+A successive-approximation ADC {\em SA-ADC} converts an analog
+input to digital using a binary search technique.
+In SA-ADC, a successive approximation register(SAR) containing 
+a digital value is fed to an internal DAC and its output is 
+compared to the input voltage. A sample and hold(SAH) circuit 
+is used to supply constant input voltage to the comparator. 
+A SA-ADC provides medium levels of accuracy and conversion time. 
+The PUF output variation can occur because of microscopic variations 
+in electrical components used in SAH circuit and internal DAC.
 %It suffers from thermal noise for capacitors($kT/C$) which increases with temperature and is inversely proportional to the capacitance. However with higher capacitance, power consumption increases and accuracy decreases and usually a trade off is required.
-\end{itemize}
+
 
 \section{Mixed Circuit PUFs}
-In any electronic device, we encounter conversions from analog form to digital form and vice versa. Consider
+Nano scale variations in DACs and ADCs.
+
+
+
+
+
+A R-2R DAC suffers from thermal noise which increases with resistance and temperature. The PUF output variation can occur because of microscopic variations in the resistors and switches used.
+
+
 two people speaking through a mobile phone. Sound is converted to an analog signal by the microphone, which is
 then converted to digital form by an analog to digital converter(ADC) for transmission. In the other end, the digital
 data is converted to analog by a digital to analog converter(DAC) and the speaker converts to audible sound. In this
