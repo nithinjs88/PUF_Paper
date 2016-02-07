@@ -158,7 +158,7 @@ An $n$-bit ADC converts an analog voltage (or current) to
 an equivalent $n$-bit digital data. The commonly used ADCs are
 flash, successive-approximation, and sigma-delta ADCs. We give
 a brief background on the successive-approximation ADC; the 
-ADC we used for our expermients.
+ADC we used for our experiments.
 
 A successive-approximation ADC {\em SA-ADC} converts an analog
 input to digital using a binary search technique.
@@ -169,6 +169,11 @@ is used to supply constant input voltage to the comparator.
 A SA-ADC provides medium levels of accuracy and conversion time. 
 The PUF output variation can occur because of microscopic variations 
 in electrical components used in SAH circuit and internal DAC.
+\begin{figure}[h]
+\includegraphics[width=6cm]{SA-ADC.png}
+\centering
+\caption{Block diagram of an n-bit successive-approximation ADC}
+\end{figure}
 %It suffers from thermal noise for capacitors($kT/C$) which increases with temperature and is inversely proportional to the capacitance. However with higher capacitance, power consumption increases and accuracy decreases and usually a trade off is required.
 
 
