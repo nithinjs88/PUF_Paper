@@ -185,24 +185,25 @@ in electrical components used in SAH circuit and internal DAC.
 This section describes how the MS-PUFs are built.
 
 {\flushleft \em Constructing the MS-PUF. }
-The MS-PUF is created by connecting outputs of DAC to an
-input channel of an ADC. This creates loops between the processors
-cores, DACs, and ADCs as shown in Figure~\ref{fig:ms-puf}.
-If there are $n$ DACs and $m$ ADCs in the device
-(and $n \le m$), then $n$ such loops are made resulting in $n$ feedback channels.
+The MS-PUF is created by connecting outputs of DACs to 
+input channels of an ADC. This creates loops between the processors
+core, DACs, and ADCs as shown in Figure~\ref{fig:ms_puf}.
+If there are $\alpha$ DACs and $\beta$ ADC channels in the device
+(and $\alpha \le \beta$), then $\alpha$ such loops are made resulting 
+in $\alpha$ feedback channels.
 The PUFs challenge is a time-series pattern comprising of
-$\alpha$-bit digital values and a sequence of random channel identifiers.
-The response is a time-series pattern comprising of $\beta$-bit digital 
-values obtained from the ADC. The values for $\alpha$ and $\beta$ are
-respectively dependent on the DAC and ADC resolutions. Typically, $\alpha = \beta$
+$n$-bit digital values and a sequence of random channel identifiers.
+The response is a time-series pattern comprising of $n$-bit digital 
+values obtained from the ADC. The values for $n$ and $m$ are
+respectively dependent on the DAC and ADC resolutions. Typically, $n = m$
 for a device and have values 8, 12, 16, or 24.
 
 Algorithm~\ref{algo:puf_sw} depicts the MS-PUF. 
 The sofware running in the processor core 
-selects the first channel from the sequence ($\mathbf L$) and 
+selects the first channel from the sequence and 
 transfers the time-series digital pattern to the corresponding
-DAC one value at a time ({\em line~5}). Each digital value is converted to an analog voltage (or
-current) and reconverted to a representative digital value by the ADC.
+channel one value at a time ({\em line~5}). Each input is converted to an analog voltage (or
+current) by the DAC and reconverted to a  digital value by the ADC.
 The software program reads these values from the ADC to form a new digital time-series 
 pattern ({\em line~7}). This pattern forms the input to the next channel in the sequence. The process
 is repeated for the entire sequence. A function $g$ processes the initial pattern ($\mathbf C$) and 
@@ -232,21 +233,15 @@ the final pattern formed (corresponding to $\mathbf L_{len(L)}$) to form the PUF
 \end{scriptsize}
 \end{algorithm}
 
-In every iteration of Algorithm~\ref{algo:puf_sw}, $r$, the $\beta$-bit 
-reply from the ADC is the result of $\alpha$-bit DAC input $\mathbf T_j$ 
+In every iteration of Algorithm~\ref{algo:puf_sw}, $r$, the $m$-bit 
+reply from the ADC is the result of the $n$-bit DAC input $\mathbf T_j$ 
 undergoing a conversion to analog followed by a reconversion to digital. 
 Due to reasons such as quatification and ambient noise, the result ($r$)
-would be different from $\mathbf T_j$ even if $\alpha = \beta$. 
+would be different from $\mathbf T_j$ even if $m = n$.
 
 Due to nano-scale variations, devices would inject certain randomness into
 $r$ that would depend on the channel used and would vary from one device to another. 
-
-
-
-
- 
-There are several potential reasons for variations 
-between devices.
+There are several potential reasons for variations between channels and devices.
 A DAC output for instance, is influenced by several nano-scale features such 
 as voltage references, resistor tolerances, 
 capacitive effects, and amplifier differences. This could result 
