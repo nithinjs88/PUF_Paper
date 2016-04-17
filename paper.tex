@@ -271,8 +271,83 @@ A R-2R DAC suffers from thermal noise which increases with resistance and temper
 
 \section{Evaluation}
 
+\section{Attacks on PUFs}
+As more and more security measures arise and evolve, hackers and adversaries come up with new ways to break the security measures. Contrary to cryptographic systems which rely on a secret key, PUFs are more secure because of nano scale variations associated with hardware which cannot be cloned even by the manufacturer. However they are vulnerable to certain attacks like Fault Attacks, Side-channel attacks and Modelling attacks. 
+\subsection {Classification by security}
+Based on the security features, PUFs are classified into
+\begin{itemize}
+\item \textbf{Strong PUFs}\\
+In these PUFs, adversary is given unlimited access and is free to give any number of challenges and obtain its corresponding response. The features of strong PUFs are
+\begin{enumerate}
+\item It is impossible even for the manufacturer to clone the PUF
+\item In a short span of time, it should be hard to obtain all possible challenge-response pairs
+\item It should be impossible to predict response of an unknown challenge, even though the adversary has access to several challenge-response pairs. 
+\end{enumerate}
 
 
+\item \textbf{Controlled PUFs}\\
+These PUFs add control logic on top of strong PUFs thus limiting access to giving challenges to PUFs and obtaining their corresponding responses. They offer some resistance to modelling attacks, even though it is still possible to attack the underlying strong PUF.
+
+
+\item \textbf{Weak PUFs}\\
+In these PUFs, adversary cannot get the corresponding responses of a known challenge. These PUFs usually have limited number of challenge-response pairs. 
+\end{itemize}
+\subsection {Classification of attacks}
+
+The PUF attacks can be broadly classified into
+\begin{itemize}
+\item \textbf{Fault Attacks}\\ Fault attacks are those attacks which happen when the device is subjected to extreme conditions like temperature. This results in unexpected erroneous behaviour which defeats the purpose of device authentication and identification.
+
+\item \textbf{Side-channel Attacks}\\ Side-channel attacks try to extract data based on the physical implementation of the device. The adversary studies the behaviour of the device like power consumption, timing information which can reveal further information about the working of the device.
+
+\item \textbf{Modelling Attacks}\\
+The adversary tries to build an mathematical model  from a set of challenge-response pairs. From the model, the adversary predicts the response for an unknown challenge with good accuracy. So an accurate model can emulate the challenge-response behaviour of a PUF. This poses severe vulnerabilities as it would be difficult to distinguish between an actual PUF and some other device emulating the PUF. These attacks can be implemented using
+\begin{itemize}
+\item \textit{Lookup Table} based implementation in which we get response from a known challenge which exists in the table. The accuracy is pretty high but the drawback is that large number of challenge-response pairs are needed.
+\item \textit{Machine Learning Techniques} such as Support Vector Machines and Logistic Regression which builds an approximate mathematical model which predicts response of an unknown challenge with high probability. This can work with significantly lesser number of challenge-response pairs than the Lookup Table bases implementation.
+\subsection{Storage Requirements for Mixed Signal PUF}
+In this section we discuss the storage requirements to correctly predict the response of a challenge using a lookup table. Let the mixed signal PUF use a $\beta$ DAC-ADC pair. So our challenge is $\beta$ bits. Say, the response depends on the previous $\gamma$ challenges and we use $\alpha$ DAC-ADC channels for obtaining the challenge-response pairs.
+\begin{itemize}
+\item Case 1: $\beta$ bit single channel DAC-ADC with no dependence on previous challenges.\\
+In this case, the lookup table will have $2^{\beta}$ entries. Each entry will have $\beta$ bit corresponding to the challenge and another $\beta$ bit corresponding to the response. So the size of an entry is $2\times\beta$ bits. So the total storage required is
+\begin{eqnarray}
+&=& No\ of\ entries\ \times\ Size\ of\ an \ entry  \nonumber \\
+&=& 2^{\beta} \times 2{\beta}\ bits \nonumber \\
+&=& 2^{\beta + 1}\times\beta\ bits.
+\end{eqnarray}
+We can reduce the storage of the lookup table using direct addressing. In this case, the entry corresponding to the challenge can be calculated from the index of the lookup table. Using this optimization, the size of the entry is $\beta$ bits corresponding to the response and the number of entries remain the same. So the total storage required is
+\begin{eqnarray}
+&=& No\ of\ entries\ \times\ Size\ of\ an \ entry  \nonumber\\
+&=& 2^{\beta} \times {\beta}\ bits
+\end{eqnarray}
+
+
+\item Case 2: $\beta$ bit single channel DAC-ADC with dependence on previous $\gamma$ challenges\\
+In this case, the lookup table will have $2^{\beta\times\gamma}$ entries. Each entry will have $\beta*\gamma$ bit corresponding to the challenge and another $\beta$ bit corresponding to the response. So size of an entry is $\beta\times(\gamma + 1)$ bits. So the total storage required is
+\begin{eqnarray}
+&=& No\ of\ entries\ \times\ Size\ of\ an \ entry  \nonumber \\
+&=& 2^{\beta\gamma} \times \beta\times(\gamma + 1)\ bits 
+%&=& 2^{\beta + 1}*\beta\ bits.
+\end{eqnarray}
+Using direct addressing, the size of an entry can be reduced to $\beta$ bits which is the size of the response avoiding the $\beta*\gamma$ bits required for the challenge. So the total storage required is
+\begin{eqnarray}
+&=& No\ of\ entries\ *\ Size\ of\ an \ entry  \nonumber\\
+&=& 2^{\beta\times\gamma} * {\beta}\ bits
+\end{eqnarray}
+
+\item Case 3: $\beta$ bit $\alpha$ channel DAC-ADC with dependence on previous $\gamma$ challenges\\
+Similar to lookup table for a channel with dependence on previous $\gamma$ challenges, we need $\alpha ^ \gamma$ tables which corresponds to the permutation with repetition of previous $\gamma$ challenges coming from  $\alpha-tuple$ set of channels. So the storage required is
+\begin{eqnarray}
+&=& \alpha ^ \gamma \times\ Storage\ required\ for \ Case\ 2 \nonumber \\
+&=&  \alpha ^ \gamma \times 2^{\beta\gamma} \times \beta\times(\gamma + 1)\ bits
+\end{eqnarray}
+
+Using direct addressing, we can reduce the storage requirement to $\alpha ^ \gamma \times 2^{\beta\gamma} \times \beta$ bits.
+\end{itemize}
+
+% In the simplest case where the number of channels is one and there is no dependence on previous challenges,
+\end{itemize} 
+\end{itemize}
 
 \section{Related Works}
 In the last decade various types of PUFs have been proposed. The PUFs are categorized into either
